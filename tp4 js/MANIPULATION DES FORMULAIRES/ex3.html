@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Album d'images</title>
+    <style>
+      img {
+        margin-top: 20px;
+        width: 300px;
+        height: auto;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Choisissez une image :</h2>
+
+    
+    <select id="listeImages">
+      <option value="chien.png">Chien</option>
+      <option value="chat.jpg">Chat</option>
+      <option value="lapin.jpg" selected>Lapin</option>
+      <option value="cheval.jpg">Cheval</option>
+    </select>
+    <br />
+    <img id="imageAffichee" src="lapin.jpg" alt="Image sélectionnée" />
+
+    <script>
+      const select = document.getElementById("listeImages");
+      const image = document.getElementById("imageAffichee");
+
+      // Changement d'image lors de la sélection
+      select.addEventListener("change", function () {
+        image.src = select.value;
+      });
+    </script>
+  </body>
+</html>

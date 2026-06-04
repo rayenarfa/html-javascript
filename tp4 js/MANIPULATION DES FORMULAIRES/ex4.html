@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+</head>
+<body>
+
+    <form id="formLogin">
+        <table border="1">
+            <tr>
+                <th>Login</th>
+                <th>Password</th>
+            </tr>
+            <tr>
+                <td><input type="text" id="login"></td>
+                <td><input type="password" id="password"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <button type="submit"  >Login</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <script>
+        const form = document.getElementById("formLogin");
+        const login = document.getElementById("login");
+        const password = document.getElementById("password");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            if (login.value === "" && password.value === "") {
+                alert("Veuillez saisir le login et le mot de passe !");
+            } else if (login.value === "") {
+                alert("Veuillez saisir le login !");
+            } else if (password.value === "") {
+                alert("Veuillez saisir le mot de passe !");
+            } else {
+                alert("Connexion réussie !");
+            }
+        });
+    </script>
+
+</body>
+</html>

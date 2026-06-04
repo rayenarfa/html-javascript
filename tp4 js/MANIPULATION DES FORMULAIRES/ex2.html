@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Types de musique</title>
+  </head>
+  <body>
+    
+    <select id="musique" onchange="afficherChoix()">
+      <option value="">-- Sélectionnez --</option>
+      <option value="Classique">Classique</option>
+      <option value="Jazz">Jazz</option>
+      <option value="Rock">Rock</option>
+      <option value="Pop">Pop</option>
+    </select>
+    <script>
+      function afficherChoix() {
+        let select = document.getElementById("musique");
+        let choix = select.value;
+
+        if (choix !== "") {
+          alert("Vous avez choisi : " + choix);
+        }
+      }
+    </script>
+  </body>
+</html>

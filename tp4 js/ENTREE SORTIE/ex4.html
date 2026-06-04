@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Calcul du carré</title>
+</head>
+<body>
+    
+    <label>Entier :</label><br>
+    <input type="number" id="nombre"><br>
+
+    
+    <button onclick="calculerCarre()">Carré</button><br>
+
+    
+    <label>Résultat :</label><br>
+    <input type="text" id="resultat" readonly>
+
+    <script>
+        function calculerCarre() {
+            let nombre = document.getElementById("nombre").value;
+            if (nombre === "") {
+                alert("Veuillez saisir un nombre !");
+                return;
+            }
+            let carre = nombre * nombre;
+            document.getElementById("resultat").value = carre;
+        }
+    </script>
+
+</body>
+</html>

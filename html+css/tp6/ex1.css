@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #7fa9a3; /* light green */
+  display: flex;
+}
+
+li {
+  display: inline-block;
+}
+
+li a {
+  display: block;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: white;
+}
+
+li a:hover {
+  background-color: #032f28;
+}
+
+.active a {
+  background-color: #1f6f4a; /* dark green */
+}

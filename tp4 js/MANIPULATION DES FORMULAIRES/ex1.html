@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Choix avec boutons radio</title>
+  </head>
+  <body>
+    <input type="radio" name="choix" value="Option 1" /> Option 1<br />
+    <input type="radio" name="choix" value="Option 2" /> Option 2<br />
+    <input type="radio" name="choix" value="Option 3" /> Option 3<br /><br />
+    <button onclick="afficherChoix()">Afficher votre choix</button>
+    <script>
+      function afficherChoix() {
+        let choix = document.getElementsByName("choix");
+        let selection = null;
+        for (let i = 0; i < choix.length; i++) {
+          if (choix[i].checked) {
+            selection = choix[i].value;
+            break;
+          }
+        }
+        if (selection) {
+          alert("Votre choix est : " + selection);
+        } else {
+          alert("Veuillez sélectionner une option !");
+        }
+      }
+    </script>
+  </body>
+</html>

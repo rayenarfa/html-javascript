@@ -1,0 +1,128 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    background-color: #2f4a57;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #bcd0d8;
+    font-size: 14px;
+}
+
+nav a:hover {
+    color: white;
+}
+
+header .date {
+    color: #a8c3cc;
+    margin-bottom: 10px;
+}
+
+header h1 {
+    font-size: 40px;
+    margin: 10px 0;
+}
+
+header h2 {
+    font-size: 20px;
+    color: #8ec0c7;
+    margin-bottom: 15px;
+}
+
+header .text {
+    max-width: 600px;
+    margin: auto;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    border: 1px solid white;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: white;
+    color: #2f4a57;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    
+    padding: 40px;
+    background-color: #f4f4f4;
+}
+section {
+    display: flex;
+    gap: 20px;
+}
+article {
+    width: 250px;
+    text-align: left;
+    
+}
+
+article h2 {
+    font-size: 12px;
+    color: gray;
+    margin-bottom: 10px;
+}
+
+article img {
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+article h1 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+article p {
+    font-size: 13px;
+    color: #555;
+}
+
+footer {
+    background-color: #2f4a57;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+}
+
+footer nav ul {
+    display: flex;
+    gap: 20px;
+}
+
+footer a {
+    color: #bcd0d8;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: white;
+}

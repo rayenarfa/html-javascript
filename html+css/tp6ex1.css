@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #7fa9a3; /* light green */
+  display: flex;
+}
+
+.navbar li {
+  display: inline-block;
+}
+
+.navbar li a {
+  display: block;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: white;
+}
+
+.navbar li a:hover {
+  background-color: #5f8f88;
+}
+
+/* Active (Home) button */
+.navbar .active a {
+  background-color: #1f6f4a; /* dark green */
+}

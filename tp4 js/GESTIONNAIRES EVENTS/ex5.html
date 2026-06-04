@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>QCM</title>
+</head>
+<body>
+
+<h3>Quels sont les bons numéros ? (1, 2 et 4)</h3>
+
+<input type="checkbox" id="c1"> 1<br>
+<input type="checkbox" id="c2"> 2<br>
+<input type="checkbox" id="c3"> 3<br>
+<input type="checkbox" id="c4"> 4<br><br>
+
+<button id="corriger">Corriger</button>
+
+<script>
+    const c1 = document.getElementById("c1");
+    const c2 = document.getElementById("c2");
+    const c3 = document.getElementById("c3");
+    const c4 = document.getElementById("c4");
+    const btn = document.getElementById("corriger");
+
+    btn.addEventListener("click", function() {
+        if (c1.checked && c2.checked && c4.checked && !c3.checked) {
+            alert("Bonne réponse !");
+        } else {
+            alert("Mauvaise réponse !");
+        }
+    });
+</script>
+
+</body>
+</html>
