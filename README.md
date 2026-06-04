@@ -1,938 +1,963 @@
-# Test — HTML & JavaScript
+# Révision — Théorie des graphes (cours + Python)
 
-Petits exercices avec **question** puis **correction en code**. Couvre tout le programme (sans CSS).
-
----
-
-## Partie 1 — Structure HTML
+Guide ordonné pour l’examen : **questions de cours** + **code Python (NetworkX)**.
 
 ---
 
-### Ex. 1.1 — Squelette minimal HTML5
+## Table des matières
 
-**Question :** Écris le squelette d’une page HTML5 en français avec charset UTF-8 et le titre « Mon examen ».
+**Partie A — Installation**
+1. [Installer Python et les bibliothèques](#partie-a--installation)
 
-**Correction :**
+**Partie B — Cours (définitions)**
+2. [Vocabulaire de base](#partie-b1--vocabulaire-de-base)
+3. [Degré et propriétés](#partie-b2--degré-et-propriétés)
+4. [Matrice d’adjacence](#partie-b3--matrice-dadjacence)
+5. [Chaînes, cycles, connexité](#partie-b4--chaînes-cycles-connexité)
+6. [Graphe orienté](#partie-b5--graphe-orienté)
+7. [Types de graphes](#partie-b6--types-de-graphes)
+8. [BFS — parcours en largeur](#partie-b7--bfs--parcours-en-largeur)
+9. [Vrai / Faux à connaître](#partie-b8--vrai--faux-à-connaître)
 
-```html
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Mon examen</title>
-</head>
-<body>
+**Partie C — Code Python (résumés)**
+10. [Créer et afficher un graphe](#partie-c1--créer-et-afficher-un-graphe)
+11. [Sommets et arêtes](#partie-c2--sommets-et-arêtes)
+12. [Analyse et algorithmes](#partie-c3--analyse-et-algorithmes)
+13. [Graphes pondérés et visualisation](#partie-c4--graphes-pondérés-et-visualisation)
+14. [BFS en Python](#partie-c5--bfs-en-python)
 
-</body>
-</html>
+**Partie D — Exercices**
+15. [Exercices cours (théorie)](#partie-d1--exercices-cours-théorie)
+16. [Exercices code Python](#partie-d2--exercices-code-python)
+
+---
+
+# Partie A — Installation
+
+## A.1 Python
+
+1. Aller sur [python.org](https://www.python.org)
+2. Télécharger et installer
+3. **Windows :** cocher **« Add Python to PATH »**
+
+## A.2 Bibliothèques
+
+Dans le terminal (`cmd`) :
+
+```bash
+pip install networkx
+pip install matplotlib
+```
+
+Optionnel (graphes interactifs 3D) :
+
+```bash
+pip install pyvis
+```
+
+## A.3 Test d’installation
+
+Fichier `test_graphe.py` :
+
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+
+G = nx.Graph()
+G.add_edge("Moi", "Ami 1")
+G.add_edge("Moi", "Ami 2")
+G.add_edge("Ami 1", "Ami 2")
+G.add_edge("Ami 2", "Ami 3")
+
+nx.draw(G, with_labels=True, node_color='skyblue', node_size=1500, edge_color='gray')
+plt.show()
+```
+
+| Bibliothèque | Rôle |
+|--------------|------|
+| **NetworkX** | Créer, modifier, analyser des graphes |
+| **Matplotlib** | Afficher les graphes (`plt.show()`) |
+| **Pyvis** | Graphes interactifs (optionnel) |
+
+---
+
+# Partie B — Cours (définitions)
+
+## Partie B1 — Vocabulaire de base
+
+| Terme | Définition |
+|-------|------------|
+| **Graphe** G = (S, A) | Ensemble de **sommets** S et d’**arêtes** A (liens entre sommets) |
+| **Sommet** (nœud, vertex) | Point du graphe (ex. A, B, 1, « Tunis ») |
+| **Arête** (edge) | Lien entre 2 sommets ; notée **(A, B)** en non orienté |
+| **Arc** | Lien **orienté** ; noté **(A → B)** ou **(A, B)** dans un graphe dirigé |
+| **Ordre** du graphe | Nombre de sommets : **\|S\|** |
+| **Taille** | Nombre d’arêtes : **m** |
+| **Voisin** de s | Sommet relié à s par une arête |
+| **Voisinage** N(s) | Ensemble des voisins de s |
+| **Sommet isolé** | Degré = 0 (aucune arête) |
+| **Graphe complet** Kₙ | Chaque sommet est relié à **tous** les autres |
+
+---
+
+## Partie B2 — Degré et propriétés
+
+| Terme | Définition |
+|-------|------------|
+| **Degré** deg(s) | Nombre d’arêtes incidentes à s (non orienté) |
+| **Somme des degrés** | **Σ deg(s) = 2m** (chaque arête compte pour 2) |
+| **Conséquence** | La somme des degrés est **toujours paire** |
+
+**Exemple** — Graphe : (A,B), (A,C), (B,C), (B,D), (C,E)
+
+| Sommet | Degré |
+|--------|-------|
+| A | 2 |
+| B | 3 |
+| C | 3 |
+| D | 1 |
+| E | 1 |
+
+- Ordre = **5**
+- m = **5** arêtes → Σ deg = 10 = 2×5 ✓
+
+---
+
+## Partie B3 — Matrice d’adjacence
+
+Tableau carré : ligne i, colonne j = **1** s’il existe une arête (ou arc) de i vers j, sinon **0**.
+
+**Graphe non orienté** → matrice **symétrique** : aᵢⱼ = aⱼᵢ
+
+**Exemple** — Sommets A, B, C, D — Arêtes : (A,B), (A,C), (B,D), (C,D)
+
+```
+     A  B  C  D
+A [  0  1  1  0 ]
+B [  1  0  0  1 ]
+C [  1  0  0  1 ]
+D [  0  1  1  0 ]
 ```
 
 ---
 
-### Ex. 1.2 — Viewport mobile
+## Partie B4 — Chaînes, cycles, connexité
 
-**Question :** Ajoute la balise meta pour que la page s’adapte aux écrans mobiles.
+| Terme | Définition |
+|-------|------------|
+| **Chaîne** | Suite de sommets reliés par des arêtes consécutives |
+| **Longueur** | Nombre d’**arêtes** dans la chaîne |
+| **Chaîne fermée** | Départ = arrivée (même sommet) |
+| **Cycle** | Chaîne fermée **sans répéter** les sommets (sauf départ/arrivée) |
+| **Graphe connexe** | Entre **toute** paire de sommets, il existe une chaîne |
+| **Composante connexe** | Sous-graphe connexe **maximal** (impossible d’ajouter un sommet) |
 
-**Correction :**
+**Exemple** — Deux composantes : {A-B-C} et {D-E} → graphe **non connexe**, **2** composantes.
 
-```html
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+---
+
+## Partie B5 — Graphe orienté
+
+| Terme | Définition |
+|-------|------------|
+| **Successeur** de s | Sommets atteints par un arc **partant** de s |
+| **Prédécesseur** de s | Sommets ayant un arc **vers** s |
+| **Matrice d’adjacence** | En général **non symétrique** |
+
+**Exemple** — Arcs : A→B, B→C, C→A, C→D
+
+- Succ(C) = {A, D}
+- Pred(A) = {C}
+
+Matrice (ordre A, B, C, D) :
+
 ```
-
-*(à placer dans `<head>`)*
-
----
-
-### Ex. 1.3 — Où va le contenu visible ?
-
-**Question :** Dans quelle balise place-t-on tout ce que l’utilisateur voit à l’écran ?
-
-**Correction :**
-
-```html
-<body>
-    <h1>Bonjour</h1>
-    <p>Contenu visible ici.</p>
-</body>
-```
-
----
-
-## Partie 2 — Texte et titres
-
----
-
-### Ex. 2.1 — Titres et paragraphe
-
-**Question :** Crée un titre principal « ESIP », un sous-titre « Gafsa », puis un paragraphe sur deux lignes avec un saut de ligne.
-
-**Correction :**
-
-```html
-<h1>ESIP</h1>
-<h3>Gafsa</h3>
-<p>Première ligne<br>Deuxième ligne</p>
+     A  B  C  D
+A [  0  1  0  0 ]
+B [  0  0  1  0 ]
+C [  1  0  0  1 ]
+D [  0  0  0  0 ]
 ```
 
 ---
 
-### Ex. 2.2 — Ligne horizontale
+## Partie B6 — Types de graphes
 
-**Question :** Insère une ligne de séparation à 60% de la largeur entre deux sections.
+| Type | Symbole NetworkX | Description |
+|------|------------------|-------------|
+| **Non orienté** | `nx.Graph()` | Arête (A,B) = lien dans les deux sens |
+| **Orienté** | `nx.DiGraph()` | Arc A→B seulement |
+| **Pondéré** | `weight=` sur une arête | Valeur numérique (distance, coût) |
+| **Multigraphe** | `nx.MultiGraph()` | Plusieurs arêtes entre les mêmes sommets |
 
-**Correction :**
+---
 
-```html
-<h3>Section 1</h3>
-<p>Texte...</p>
-<hr width="60%">
-<h3>Section 2</h3>
+## Partie B7 — BFS — parcours en largeur
+
+| Idée | Détail |
+|------|--------|
+| **Principe** | Explorer **niveau par niveau** : voisins directs, puis voisins des voisins… |
+| **Structure** | **File FIFO** (First In, First Out) |
+| **Marquage** | Ensemble des sommets **déjà visités** (évite les boucles) |
+| **Ordre** | Du plus proche au plus loin depuis la source |
+
+**Pseudo-code :**
+
+```
+BFS(G, s):
+    file Q ← [s]
+    marquer s comme visité
+    tant que Q non vide:
+        u ← défiler Q
+        pour chaque voisin v de u:
+            si v non visité:
+                marquer v
+                enfiler v
+```
+
+**Exemple** — Graphe A-B-C-D-E-F → BFS depuis A : **A → B → C → D → E → F**
+
+**Applications :** plus court chemin (nombre d’arêtes), réseau social (amis à distance k).
+
+---
+
+## Partie B8 — Vrai / Faux à connaître
+
+| Affirmation | Réponse |
+|-------------|---------|
+| Un graphe complet est toujours connexe | **Vrai** |
+| La somme des degrés est toujours paire | **Vrai** |
+| Un cycle eulérien passe une seule fois par chaque sommet | **Faux** (cycle **hamiltonien**) |
+| La matrice d’un graphe non orienté est symétrique | **Vrai** |
+
+---
+
+# Partie C — Code Python (résumés)
+
+## Partie C1 — Créer et afficher un graphe
+
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+
+G = nx.Graph()          # non orienté
+DG = nx.DiGraph()       # orienté
+MG = nx.MultiGraph()    # multi-arêtes
+
+nx.draw(G, with_labels=True, node_color='skyblue', node_size=1500)
+plt.show()
 ```
 
 ---
 
-### Ex. 2.3 — Formule avec indice
+## Partie C2 — Sommets et arêtes
 
-**Question :** Affiche centré : **X₂** = X₁ cos(a) (X₂ et X₁ en indice, X₂ en gras).
+```python
+# Sommets
+G.add_node("A")
+G.add_nodes_from(["B", "C", "D"])
+G.remove_node("D")
 
-**Correction :**
+# Arêtes (non orienté : ordre peu importe)
+G.add_edge("A", "B")
+G.add_edges_from([("B", "C"), ("C", "D")])
+G.remove_edge("A", "C")
 
-```html
-<center>
-    <b>X<sub>2</sub></b> = X<sub>1</sub> cos(a)
-</center>
+# Attributs
+G.add_edge("A", "B", weight=4.5)
+G.nodes["A"]["label"] = "Source"
+
+# Lister
+print(G.nodes())
+print(G.edges())
+print(G.number_of_nodes())
+print(G.number_of_edges())
 ```
 
 ---
 
-### Ex. 2.4 — Alignement
+## Partie C3 — Analyse et algorithmes
 
-**Question :** Trois titres `<h4>` : un à droite, un au centre, un à gauche.
+```python
+# Voisins et degré
+list(G.neighbors("A"))
+G.degree("A")
 
-**Correction :**
+# Existence
+G.has_node(5)
+G.has_edge(2, 4)
 
-```html
-<h4 align="right">À droite</h4>
-<h4 align="center">Au centre</h4>
-<h4 align="left">À gauche</h4>
+# Plus court chemin
+chemin = nx.shortest_path(G, source="A", target="C")
+chemin_pondere = nx.shortest_path(G, source="Tunis", target="Tozeur", weight="weight")
+distance = nx.shortest_path_length(G, source="Tunis", target="Tozeur", weight="weight")
+
+# Connexité
+nx.is_connected(G)
+nx.number_connected_components(G)
 ```
 
 ---
 
-## Partie 3 — Listes
+## Partie C4 — Graphes pondérés et visualisation
 
----
+```python
+G.add_weighted_edges_from([
+    ("A", "B", 5),
+    ("A", "C", 2),
+    ("B", "D", 7),
+    ("C", "D", 1)
+])
 
-### Ex. 3.1 — Liste à puces
+pos = nx.spring_layout(G)
+nx.draw(G, pos, with_labels=True)
+labels = nx.get_edge_attributes(G, 'weight')
+nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
+plt.show()
+```
 
-**Question :** Liste à puces avec : Adresse ESIP, Tél, E-mail.
+**Deux graphes côte à côte :**
 
-**Correction :**
-
-```html
-<ul>
-    <li>Adresse : ESIP Gafsa</li>
-    <li>Tel : 76 221 111</li>
-    <li>E-mail : esip@esip.tn</li>
-</ul>
+```python
+plt.figure(figsize=(10, 4))
+plt.subplot(121)
+nx.draw(G, with_labels=True)
+plt.title("Non orienté")
+plt.subplot(122)
+nx.draw(DG, with_labels=True)
+plt.title("Orienté")
+plt.show()
 ```
 
 ---
 
-### Ex. 3.2 — Liste numérotée
+## Partie C5 — BFS en Python
 
-**Question :** Menu numéroté : Accueil, Contact, À propos.
+**Avec NetworkX :**
 
-**Correction :**
+```python
+bfs_edges = list(nx.bfs_edges(G, source="A"))
+bfs_tree = nx.bfs_tree(G, source="A")
+```
 
-```html
-<ol>
-    <li>Accueil</li>
-    <li>Contact</li>
-    <li>À propos</li>
-</ol>
+**À la main (dictionnaire + deque) :**
+
+```python
+from collections import deque
+
+def bfs(graphe, depart):
+    visites = set()
+    file = deque([depart])
+    visites.add(depart)
+    while file:
+        u = file.popleft()
+        print(u)
+        for v in graphe[u]:
+            if v not in visites:
+                visites.add(v)
+                file.append(v)
 ```
 
 ---
 
-### Ex. 3.3 — Liste imbriquée
+# Partie D — Exercices
 
-**Question :** Liste numérotée « École » avec sous-liste à puces : 1ère année Tozeur, 2e année Gafsa.
+Format : **Question** → **Correction**
+
+---
+
+# Partie D1 — Exercices cours (théorie)
+
+---
+
+### Ex. T1 — Ordre et degrés
+
+**Question :** Graphe non orienté — Sommets : A, B, C, D, E — Arêtes : (A,B), (A,C), (B,C), (B,D), (C,E).
+
+1. Ordre du graphe ?
+2. Degré de chaque sommet ?
+3. Voisins de B ?
+4. Sommet isolé ?
+5. Graphe complet ?
 
 **Correction :**
 
-```html
-<ol>
-    <li>École
-        <ul>
-            <li>1ère : Tozeur</li>
-            <li>2e : Gafsa</li>
-        </ul>
-    </li>
-</ol>
+1. **Ordre = 5** (5 sommets)
+2. deg(A)=2, deg(B)=3, deg(C)=3, deg(D)=1, deg(E)=1
+3. **Voisinage(B) = {A, C, D}**
+4. **Non** — aucun sommet de degré 0
+5. **Non** — ex. D et E ne sont pas reliés
+
+---
+
+### Ex. T2 — Somme des degrés
+
+**Question :** Sommets A,B,C,D — Arêtes : (A,B), (A,C), (A,D), (B,C). Calculer les degrés, la somme, vérifier Σ deg(s) = 2m.
+
+**Correction :**
+
+- deg(A)=3, deg(B)=2, deg(C)=2, deg(D)=1
+- **Σ = 3+2+2+1 = 8**
+- m = 4 → **2m = 8** → propriété **vérifiée**
+
+---
+
+### Ex. T3 — Matrice d’adjacence
+
+**Question :** Sommets A,B,C,D — Arêtes : (A,B), (A,C), (B,D), (C,D). Donner la matrice. Symétrique ?
+
+**Correction :**
+
+```
+     A  B  C  D
+A [  0  1  1  0 ]
+B [  1  0  0  1 ]
+C [  1  0  0  1 ]
+D [  0  1  1  0 ]
+```
+
+**Oui**, symétrique (graphe non orienté).
+
+---
+
+### Ex. T4 — Chaîne, cycle
+
+**Question :** Arêtes : (A,B), (B,C), (C,D), (D,A), (A,C). Donner une chaîne de longueur 3, une chaîne fermée, un cycle.
+
+**Correction :**
+
+1. Chaîne longueur 3 : **A — B — C — D** (3 arêtes)
+2. Chaîne fermée : **A — B — C — A**
+3. Cycle : **A — B — C — D — A**
+
+---
+
+### Ex. T5 — Connexité
+
+**Question :** Composantes {A-B-C} et {D-E}. Connexe ? Nombre de composantes ?
+
+**Correction :**
+
+1. **Non connexe** — pas de chemin entre A et D par exemple
+2. **2 composantes connexes**
+
+---
+
+### Ex. T6 — Graphe orienté
+
+**Question :** Arcs A→B, B→C, C→A, C→D. Successeurs de C ? Prédécesseurs de A ? Matrice ?
+
+**Correction :**
+
+1. **Succ(C) = {A, D}**
+2. **Pred(A) = {C}**
+3. Matrice (A,B,C,D) — ligne i → colonne j = 1 si arc i→j :
+
+```
+     A  B  C  D
+A [  0  1  0  0 ]
+B [  0  0  1  0 ]
+C [  1  0  0  1 ]
+D [  0  0  0  0 ]
+```
+
+**Non symétrique.**
+
+---
+
+### Ex. T7 — Vrai ou Faux
+
+**Question :** Répondre Vrai ou Faux :
+
+1. Graphe complet → toujours connexe
+2. Somme des degrés toujours paire
+3. Cycle eulérien = passe une fois par chaque sommet
+4. Matrice non orienté = symétrique
+
+**Correction :**
+
+| # | Réponse |
+|---|---------|
+| 1 | **Vrai** |
+| 2 | **Vrai** |
+| 3 | **Faux** |
+| 4 | **Vrai** |
+
+---
+
+### Ex. T8 — Définitions rapides
+
+**Question :** Définir : ordre, taille, sommet isolé, voisin, composante connexe.
+
+**Correction :**
+
+| Terme | Définition courte |
+|-------|-------------------|
+| Ordre | Nombre de sommets |
+| Taille | Nombre d’arêtes m |
+| Sommet isolé | deg(s) = 0 |
+| Voisin | Sommet relié par une arête |
+| Composante connexe | Sous-graphe connexe maximal |
+
+---
+
+### Ex. T9 — BFS à la main
+
+**Question :** Graphe : A-B, A-C, B-D, B-E, C-E, E-F. Donner l’ordre BFS depuis A.
+
+**Correction :**
+
+**A → B → C → D → E → F**
+
+(File : après A → [B,C] ; après B → [C,D,E] ; etc.)
+
+---
+
+### Ex. T10 — Propriété 2m
+
+**Question :** Un graphe a 6 arêtes. Quelle est la somme des degrés ?
+
+**Correction :**
+
+**Σ deg(s) = 2m = 2 × 6 = 12**
+
+---
+
+# Partie D2 — Exercices code Python
+
+---
+
+### Ex. P1 — Imports et graphe vide
+
+**Question :** Écris les imports et crée un graphe non orienté vide `G`.
+
+**Correction :**
+
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+
+G = nx.Graph()
 ```
 
 ---
 
-### Ex. 3.4 — Type de puces
+### Ex. P2 — Ajouter sommets et arêtes
 
-**Question :** Même liste avec puces `disc`, puis `circle`, puis `square` (3 listes séparées).
+**Question :** Ajoute les sommets A, B, C, D et les arêtes (A,B), (A,C), (B,C), (C,D). Affiche avec labels.
 
 **Correction :**
 
-```html
-<ul type="disc"><li>Item A</li></ul>
-<ul type="circle"><li>Item B</li></ul>
-<ul type="square"><li>Item C</li></ul>
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+
+G = nx.Graph()
+G.add_nodes_from(["A", "B", "C", "D"])
+G.add_edges_from([("A", "B"), ("A", "C"), ("B", "C"), ("C", "D")])
+
+nx.draw(G, with_labels=True, node_color='skyblue', node_size=1500)
+plt.show()
 ```
 
 ---
 
-### Ex. 3.5 — Liens dans une liste imbriquée
+### Ex. P3 — Supprimer nœud et arête
 
-**Question :** Liste numérotée « Constructeurs » contenant une liste à puces avec liens vers Apple et IBM.
+**Question :** Sur un graphe avec A,B,C,D et arêtes (A,B), (A,C), (C,D) : supprime D puis supprime (A,C).
 
 **Correction :**
 
-```html
-<ol>
-    <li>Constructeurs
-        <ul>
-            <li><a href="https://www.apple.com">Apple</a></li>
-            <li><a href="https://www.ibm.com">IBM</a></li>
-        </ul>
-    </li>
-</ol>
+```python
+G.remove_node("D")
+G.remove_edge("A", "C")
 ```
 
 ---
 
-## Partie 4 — Liens et ancres
+### Ex. P4 — Graphe orienté vs non orienté
 
----
-
-### Ex. 4.1 — Lien externe
-
-**Question :** Lien cliquable « Google » vers https://www.google.com.
+**Question :** Crée `G = nx.Graph()` et `DG = nx.DiGraph()`. Ajoute sommets 1..5 à chacun. Supprime 1 de G. Arêtes G : {2,3},{2,5},{3,4},{4,5}. Arcs DG : (1,3),(2,3),(2,4),(2,5),(4,5),(5,1). Affiche sommets et arêtes.
 
 **Correction :**
 
-```html
-<a href="https://www.google.com">Google</a>
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+
+G = nx.Graph()
+DG = nx.DiGraph()
+
+G.add_nodes_from([1, 2, 3, 4, 5])
+DG.add_nodes_from([1, 2, 3, 4, 5])
+
+G.remove_node(1)
+
+G.add_edges_from([(2, 3), (2, 5), (3, 4), (4, 5)])
+DG.add_edges_from([(1, 3), (2, 3), (2, 4), (2, 5), (4, 5), (5, 1)])
+
+print("Sommets G :", G.nodes())
+print("Arêtes G :", G.edges())
+print("Sommets DG :", DG.nodes())
+print("Arêtes DG :", DG.edges())
 ```
 
 ---
 
-### Ex. 4.2 — Ancre interne (aller vers une section)
+### Ex. P5 — Afficher deux graphes côte à côte
 
-**Question :** Menu avec 2 liens vers les sections `#contact` et `#cv`. Chaque section a un `<h3>` avec le bon `id`.
+**Question :** Même G et DG qu’en P4. Les tracer dans une figure avec 2 sous-graphiques.
 
 **Correction :**
 
-```html
-<ol>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#cv">CV</a></li>
-</ol>
-<hr>
-<h3 id="contact">Contact</h3>
-<p>Mon adresse...</p>
-<hr>
-<h3 id="cv">Mon CV</h3>
-<p>Mon parcours...</p>
+```python
+plt.figure(figsize=(10, 4))
+
+plt.subplot(121)
+nx.draw(G, with_labels=True)
+plt.title("Graphe non orienté")
+
+plt.subplot(122)
+nx.draw(DG, with_labels=True)
+plt.title("Graphe orienté")
+
+plt.show()
 ```
 
 ---
 
-### Ex. 4.3 — Retour au plan
+### Ex. P6 — Nombre de sommets, arêtes, voisins
 
-**Question :** Dans le sommaire, le chapitre a `id="plan1"`. Dans le contenu, un lien « Retour au plan » pointe vers ce sommaire.
+**Question :** Graphe avec arêtes (1,2), (1,3), (2,4), (3,5). Afficher nombre de sommets, d’arêtes, voisins de 1.
 
 **Correction :**
 
-```html
-<!-- Sommaire -->
-<li id="plan1"><a href="#intro">Introduction</a></li>
+```python
+import networkx as nx
 
-<!-- Contenu -->
-<li id="intro"><a href="#plan1">Introduction</a></li>
-<p>Texte du chapitre...</p>
+G = nx.Graph()
+G.add_edges_from([(1, 2), (1, 3), (2, 4), (3, 5)])
+
+print("Nombre de sommets :", G.number_of_nodes())
+print("Nombre d'arêtes :", G.number_of_edges())
+print("Voisins du sommet 1 :", list(G.neighbors(1)))
+```
+
+**Résultat attendu :** 5 sommets, 4 arêtes, voisins de 1 : **[2, 3]**
+
+---
+
+### Ex. P7 — Plus court chemin
+
+**Question :** Graphe avec chemins A-B-C et A-D. Afficher le plus court chemin de A à C.
+
+**Correction :**
+
+```python
+import networkx as nx
+
+G = nx.Graph()
+G.add_edges_from([("A", "B"), ("B", "C"), ("A", "D")])
+
+chemin = nx.shortest_path(G, source="A", target="C")
+print("Chemin le plus court :", chemin)
+```
+
+**Résultat :** `['A', 'B', 'C']`
+
+---
+
+### Ex. P8 — Graphe pondéré
+
+**Question :** Créer un graphe pondéré : A-B(5), A-C(2), B-D(7), C-D(1). Afficher les poids sur le dessin.
+
+**Correction :**
+
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+
+G = nx.Graph()
+G.add_weighted_edges_from([
+    ("A", "B", 5),
+    ("A", "C", 2),
+    ("B", "D", 7),
+    ("C", "D", 1)
+])
+
+pos = nx.spring_layout(G)
+nx.draw(G, pos, with_labels=True)
+labels = nx.get_edge_attributes(G, 'weight')
+nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
+plt.show()
 ```
 
 ---
 
-### Ex. 4.4 — Lien e-mail
+### Ex. P9 — Plus court chemin pondéré (villes)
 
-**Question :** Lien qui ouvre un mail à `etudiant@esip.tn` avec le texte « Me contacter ».
+**Question :** Graphe Tunis-Bizerte(65), Tunis-Hammamet(63), Hammamet-Sousse(80), Sousse-Sfax(130), Sfax-Gabès(140), Gabès-Gafsa(150), Gafsa-Tozeur(95). Chemin et distance Tunis → Tozeur.
 
 **Correction :**
 
-```html
-<a href="mailto:etudiant@esip.tn">Me contacter</a>
+```python
+import networkx as nx
+
+G = nx.Graph()
+G.add_weighted_edges_from([
+    ("Tunis", "Bizerte", 65),
+    ("Tunis", "Hammamet", 63),
+    ("Hammamet", "Sousse", 80),
+    ("Sousse", "Sfax", 130),
+    ("Sfax", "Gabès", 140),
+    ("Gabès", "Gafsa", 150),
+    ("Gafsa", "Tozeur", 95)
+])
+
+chemin = nx.shortest_path(G, source="Tunis", target="Tozeur", weight="weight")
+dist = nx.shortest_path_length(G, source="Tunis", target="Tozeur", weight="weight")
+
+print(" -> ".join(chemin))
+print("Distance :", dist, "km")
 ```
 
 ---
 
-## Partie 5 — Images
+### Ex. P10 — Graphe aléatoire
 
----
-
-### Ex. 5.1 — Image simple
-
-**Question :** Affiche `logo.png` avec texte alternatif « Logo ESIP » et largeur 30%.
+**Question :** Entre 2 et 10 sommets (aléatoire). Pour chaque paire possible, ajouter une arête avec probabilité 50 %. Afficher et dessiner.
 
 **Correction :**
 
-```html
-<img src="logo.png" alt="Logo ESIP" width="30%">
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+import random
+
+G = nx.Graph()
+n = random.randint(2, 10)
+
+for i in range(n):
+    G.add_node(i)
+
+for i in range(n):
+    for j in range(i + 1, n):
+        if random.randint(0, 1) == 1:
+            G.add_edge(i, j)
+
+print("Sommets :", G.nodes())
+print("Arêtes :", G.edges())
+nx.draw(G, with_labels=True)
+plt.show()
 ```
 
 ---
 
-### Ex. 5.2 — Image + lien dans une liste
+### Ex. P11 — Sommets isolés (fonction)
 
-**Question :** Dans un `<li>`, affiche une petite image puis un lien « Lycos ».
+**Question :** Écrire une fonction qui retourne `False` s’il existe un sommet de degré 0, sinon `True`.
 
 **Correction :**
 
-```html
-<li>
-    <img src="lycos.png" alt="logo Lycos" width="20%">
-    <a href="https://www.lycos.com">Lycos</a>
-</li>
+```python
+import networkx as nx
+
+def test_non_isole(G):
+    for sommet in G.nodes():
+        if G.degree(sommet) == 0:
+            return False
+    return True
+
+G = nx.Graph()
+G.add_nodes_from([1, 2, 3])
+G.add_edge(1, 2)
+print(test_non_isole(G))  # True
+
+G.add_node(4)  # isolé
+print(test_non_isole(G))  # False
 ```
 
 ---
 
-## Partie 6 — Formulaires HTML
+### Ex. P12 — BFS avec NetworkX
 
----
-
-### Ex. 6.1 — Formulaire texte + bouton
-
-**Question :** Formulaire nommé `monForm` avec un champ texte `zoneTexte` et un bouton type `button` (pas submit).
+**Question :** Graphe A-B, A-C, B-D, B-E, C-F. BFS depuis A. Afficher l’ordre des arêtes BFS.
 
 **Correction :**
 
-```html
-<form name="monForm">
-    <input type="text" name="zoneTexte"><br><br>
-    <button type="button">Cliquer</button>
-</form>
+```python
+import networkx as nx
+
+G = nx.Graph()
+G.add_edges_from([('A', 'B'), ('A', 'C'), ('B', 'D'), ('B', 'E'), ('C', 'F')])
+
+bfs_edges = list(nx.bfs_edges(G, source='A'))
+print("Arêtes BFS :", bfs_edges)
 ```
 
 ---
 
-### Ex. 6.2 — Boutons radio
+### Ex. P13 — BFS à la main (deque)
 
-**Question :** 3 options radio (même groupe `choix`) : A, B, C avec les values « Option A », etc.
+**Question :** Dictionnaire `reseau` : Amin→[Leila,Omar], etc. Implémenter BFS depuis « Amin ».
 
 **Correction :**
 
-```html
-<input type="radio" name="choix" value="Option A"> A<br>
-<input type="radio" name="choix" value="Option B"> B<br>
-<input type="radio" name="choix" value="Option C"> C<br>
+```python
+from collections import deque
+
+reseau = {
+    'Amin': ['Leila', 'Omar'],
+    'Leila': ['Amin', 'Sami'],
+    'Omar': ['Amin', 'Yassine'],
+    'Sami': ['Leila', 'Zineb'],
+    'Yassine': ['Omar', 'Zineb'],
+    'Zineb': ['Sami', 'Yassine']
+}
+
+def bfs_prenoms(graphe, depart):
+    visites = set()
+    file = deque([depart])
+    visites.add(depart)
+    while file:
+        personne = file.popleft()
+        print(personne)
+        for ami in graphe[personne]:
+            if ami not in visites:
+                visites.add(ami)
+                file.append(ami)
+
+bfs_prenoms(reseau, 'Amin')
+```
+
+**Ordre :** Amin → Leila → Omar → Sami → Yassine → Zineb
+
+---
+
+### Ex. P14 — DiGraph arc simple
+
+**Question :** Créer un DiGraph avec arc A→B seulement. Les voisins de A en non orienté vs successeurs en orienté ?
+
+**Correction :**
+
+```python
+import networkx as nx
+
+G = nx.Graph()
+G.add_edge("A", "B")
+print(list(G.neighbors("A")))  # ['B']
+
+DG = nx.DiGraph()
+DG.add_edge("A", "B")
+print(list(DG.successors("A")))   # ['B']
+print(list(DG.predecessors("B"))) # ['A']
 ```
 
 ---
 
-### Ex. 6.3 — Cases à cocher
+### Ex. P15 — has_node et has_edge
 
-**Question :** 4 checkboxes avec les id `c1`, `c2`, `c3`, `c4`.
+**Question :** Vérifier si le sommet 5 et l’arête (2,4) existent dans G.
 
 **Correction :**
 
-```html
-<input type="checkbox" id="c1"> 1<br>
-<input type="checkbox" id="c2"> 2<br>
-<input type="checkbox" id="c3"> 3<br>
-<input type="checkbox" id="c4"> 4<br>
+```python
+print(G.has_node(5))
+print(G.has_edge(2, 4))
 ```
 
 ---
 
-### Ex. 6.4 — Liste déroulante
+### Ex. P16 — Connexité
 
-**Question :** Select `id="musique"` avec option vide par défaut et Jazz, Rock.
+**Question :** Vérifier si G est connexe et donner le nombre de composantes.
 
 **Correction :**
 
-```html
-<select id="musique">
-    <option value="">-- Choisir --</option>
-    <option value="Jazz">Jazz</option>
-    <option value="Rock">Rock</option>
-</select>
+```python
+print(nx.is_connected(G))
+print(nx.number_connected_components(G))
 ```
 
 ---
 
-### Ex. 6.5 — Champ obligatoire et pattern
+### Ex. P17 — Atelier complet (énoncé type examen)
 
-**Question :** Champ texte obligatoire ; un autre qui n’accepte que des lettres (et espaces) via `pattern`.
+**Question :** En un seul script : créer G et DG, sommets 1..5, afficher, supprimer 1 de G, ajouter les arêtes de l’atelier, afficher, tracer les deux graphes.
 
 **Correction :**
 
-```html
-<input type="text" required><br>
-<input type="text" pattern="[ a-zA-Z]*" value="lettres">
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+
+G = nx.Graph()
+DG = nx.DiGraph()
+
+G.add_nodes_from([1, 2, 3, 4, 5])
+DG.add_nodes_from([1, 2, 3, 4, 5])
+
+print("Avant suppression G :", list(G.nodes()))
+G.remove_node(1)
+
+G.add_edges_from([(2, 3), (2, 5), (3, 4), (4, 5)])
+DG.add_edges_from([(1, 3), (2, 3), (2, 4), (2, 5), (4, 5), (5, 1)])
+
+print("G sommets :", list(G.nodes()))
+print("G arêtes :", list(G.edges()))
+print("DG sommets :", list(DG.nodes()))
+print("DG arêtes :", list(DG.edges()))
+
+plt.figure(figsize=(10, 4))
+plt.subplot(121)
+nx.draw(G, with_labels=True)
+plt.title("G")
+plt.subplot(122)
+nx.draw(DG, with_labels=True)
+plt.title("DG")
+plt.show()
 ```
 
 ---
 
-### Ex. 6.6 — Autres types d’input
+## Checklist examen
 
-**Question :** Un champ `number`, un `password`, un `time` obligatoire, un champ `readonly` pour le résultat.
+### Questions de cours
 
-**Correction :**
-
-```html
-<input type="number" id="nombre"><br>
-<input type="password" id="mdp"><br>
-<input type="time" value="08:00" required><br>
-<input type="text" id="resultat" readonly>
-```
-
----
-
-### Ex. 6.7 — Label
-
-**Question :** Associe le label « Entier : » au champ nombre `id="nombre"`.
-
-**Correction :**
-
-```html
-<label for="nombre">Entier :</label><br>
-<input type="number" id="nombre">
-```
-
----
-
-## Partie 7 — Tableaux
-
----
-
-### Ex. 7.1 — Tableau login
-
-**Question :** Tableau bordure 1 : en-têtes Login / Password, une ligne avec 2 inputs, une ligne avec un bouton Login centré sur 2 colonnes.
-
-**Correction :**
-
-```html
-<table border="1">
-    <tr>
-        <th>Login</th>
-        <th>Password</th>
-    </tr>
-    <tr>
-        <td><input type="text" id="login"></td>
-        <td><input type="password" id="password"></td>
-    </tr>
-    <tr>
-        <td colspan="2" align="center">
-            <button type="submit">Login</button>
-        </td>
-    </tr>
-</table>
-```
-
----
-
-## Partie 8 — HTML5 sémantique
-
----
-
-### Ex. 8.1 — Structure de page
-
-**Question :** Page avec `header`, `nav`, `main`, `footer`. Dans `main`, un `article` avec titre et paragraphe.
-
-**Correction :**
-
-```html
-<header>
-    <h1>Mon site</h1>
-    <nav>
-        <a href="#">Accueil</a>
-    </nav>
-</header>
-<main>
-    <article>
-        <h2>Article</h2>
-        <p>Contenu...</p>
-    </article>
-</main>
-<footer>
-    <p>&copy; 2026 ESIP</p>
-</footer>
-```
-
----
-
-### Ex. 8.2 — Layout avec aside
-
-**Question :** `main` contient un `aside` (menu) et un `article` (contenu).
-
-**Correction :**
-
-```html
-<main>
-    <aside>
-        <ul>
-            <li>Menu 1</li>
-            <li>Menu 2</li>
-        </ul>
-    </aside>
-    <article>
-        <h2>Titre</h2>
-        <p>Texte principal...</p>
-    </article>
-</main>
-```
-
----
-
-### Ex. 8.3 — Figure et section
-
-**Question :** Une `section` avec 2 `article`. Le premier contient un `figure` avec image.
-
-**Correction :**
-
-```html
-<section>
-    <article>
-        <h2>Photo</h2>
-        <figure>
-            <img src="photo.png" alt="Description">
-        </figure>
-    </article>
-    <article>
-        <h2>Texte</h2>
-        <p>Paragraphe...</p>
-    </article>
-</section>
-```
-
----
-
-## Partie 9 — JavaScript : alert & prompt
-
----
-
-### Ex. 9.1 — Alert au chargement
-
-**Question :** Au chargement de la page, affiche « Bonjour ».
-
-**Correction :**
-
-```html
-<script>
-    alert("Bonjour");
-</script>
-```
-
----
-
-### Ex. 9.2 — Prompt année
-
-**Question :** Demande l’année. Si l’utilisateur annule, alerte « Annulé ». Sinon affiche l’année saisie.
-
-**Correction :**
-
-```html
-<script>
-    let annee = prompt("Entrez l'année :");
-    if (annee !== null) {
-        alert("Année : " + annee);
-    } else {
-        alert("Annulé");
-    }
-</script>
-```
-
----
-
-## Partie 10 — JavaScript : DOM & formulaires
-
----
-
-### Ex. 10.1 — Écrire dans un champ (form name)
-
-**Question :** Fonction `afficher()` qui met « ESIP » dans `document.monForm.zoneTexte.value`. Bouton `onclick`.
-
-**Correction :**
-
-```html
-<form name="monForm">
-    <input type="text" name="zoneTexte">
-    <button type="button" onclick="afficher()">Afficher</button>
-</form>
-<script>
-    function afficher() {
-        document.monForm.zoneTexte.value = "ESIP";
-    }
-</script>
-```
-
----
-
-### Ex. 10.2 — Carré d’un nombre
-
-**Question :** Bouton « Carré » : lit `#nombre`, si vide → alerte ; sinon met le carré dans `#resultat` (readonly).
-
-**Correction :**
-
-```html
-<input type="number" id="nombre">
-<button onclick="calculerCarre()">Carré</button>
-<input type="text" id="resultat" readonly>
-
-<script>
-    function calculerCarre() {
-        let n = document.getElementById("nombre").value;
-        if (n === "") {
-            alert("Saisissez un nombre !");
-            return;
-        }
-        document.getElementById("resultat").value = n * n;
-    }
-</script>
-```
-
----
-
-### Ex. 10.3 — Lire un radio (boucle)
-
-**Question :** Fonction qui parcourt les radios `name="choix"` et affiche la value cochée, sinon « Aucun choix ».
-
-**Correction :**
-
-```html
-<button onclick="afficherChoix()">Valider</button>
-<script>
-    function afficherChoix() {
-        let choix = document.getElementsByName("choix");
-        let selection = null;
-        for (let i = 0; i < choix.length; i++) {
-            if (choix[i].checked) {
-                selection = choix[i].value;
-                break;
-            }
-        }
-        if (selection) {
-            alert("Choix : " + selection);
-        } else {
-            alert("Aucun choix");
-        }
-    }
-</script>
-```
-
----
-
-### Ex. 10.4 — Select onchange
-
-**Question :** Quand on change le select `#musique`, si une valeur est choisie, alerte « Vous avez choisi : … ».
-
-**Correction :**
-
-```html
-<select id="musique" onchange="afficherChoix()">
-    <option value="">--</option>
-    <option value="Jazz">Jazz</option>
-</select>
-<script>
-    function afficherChoix() {
-        let v = document.getElementById("musique").value;
-        if (v !== "") {
-            alert("Vous avez choisi : " + v);
-        }
-    }
-</script>
-```
-
----
-
-### Ex. 10.5 — Changer image avec select
-
-**Question :** Select `#listeImages` : au `change`, met à jour `src` de `#imageAffichee`.
-
-**Correction :**
-
-```html
-<select id="listeImages">
-    <option value="chat.jpg">Chat</option>
-    <option value="chien.png">Chien</option>
-</select>
-<img id="imageAffichee" src="chat.jpg" alt="image">
-
-<script>
-    const select = document.getElementById("listeImages");
-    const img = document.getElementById("imageAffichee");
-    select.addEventListener("change", function () {
-        img.src = select.value;
-    });
-</script>
-```
-
----
-
-### Ex. 10.6 — Formulaire submit + validation
-
-**Question :** Form `#formLogin` : au submit, `preventDefault`. Vérifie login et password vides (messages différents) ou succès.
-
-**Correction :**
-
-```html
-<form id="formLogin">
-    <input type="text" id="login">
-    <input type="password" id="password">
-    <button type="submit">Login</button>
-</form>
-<script>
-    const form = document.getElementById("formLogin");
-    const login = document.getElementById("login");
-    const password = document.getElementById("password");
-
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        if (login.value === "" && password.value === "") {
-            alert("Saisir login et mot de passe !");
-        } else if (login.value === "") {
-            alert("Saisir le login !");
-        } else if (password.value === "") {
-            alert("Saisir le mot de passe !");
-        } else {
-            alert("Connexion réussie !");
-        }
-    });
-</script>
-```
-
----
-
-## Partie 11 — JavaScript : événements
-
----
-
-### Ex. 11.1 — Clic → autre page
-
-**Question :** Bouton `#btn` : au clic, va vers `page.html` avec `addEventListener`.
-
-**Correction :**
-
-```html
-<button id="btn">Aller</button>
-<script>
-    document.getElementById("btn").addEventListener("click", function () {
-        document.location.href = "page.html";
-    });
-</script>
-```
-
----
-
-### Ex. 11.2 — Date actuelle
-
-**Question :** Affiche la date/heure actuelle dans `<h2 id="date">` avec `new Date()` et `toLocaleString()`.
-
-**Correction :**
-
-```html
-<h2 id="date"></h2>
-<script>
-    const el = document.getElementById("date");
-    el.textContent = new Date().toLocaleString();
-</script>
-```
-
----
-
-### Ex. 11.3 — Événement load
-
-**Question :** Quand la page est entièrement chargée, alerte « Bienvenue ».
-
-**Correction :**
-
-```html
-<script>
-    window.addEventListener("load", function () {
-        alert("Bienvenue");
-    });
-</script>
-```
-
----
-
-### Ex. 11.4 — mouseover
-
-**Question :** Lien `#lien` : au survol, alerte « Bonjour prof ».
-
-**Correction :**
-
-```html
-<a href="#" id="lien">Survolez-moi</a>
-<script>
-    document.getElementById("lien").addEventListener("mouseover", function () {
-        alert("Bonjour prof");
-    });
-</script>
-```
-
----
-
-### Ex. 11.5 — QCM checkboxes
-
-**Question :** Bonne réponse si c1, c2 et c4 cochés ET c3 non coché. Bouton `#corriger` au clic.
-
-**Correction :**
-
-```html
-<input type="checkbox" id="c1"> 1<br>
-<input type="checkbox" id="c2"> 2<br>
-<input type="checkbox" id="c3"> 3<br>
-<input type="checkbox" id="c4"> 4<br>
-<button id="corriger">Corriger</button>
-
-<script>
-    const c1 = document.getElementById("c1");
-    const c2 = document.getElementById("c2");
-    const c3 = document.getElementById("c3");
-    const c4 = document.getElementById("c4");
-
-    document.getElementById("corriger").addEventListener("click", function () {
-        if (c1.checked && c2.checked && c4.checked && !c3.checked) {
-            alert("Bonne réponse !");
-        } else {
-            alert("Mauvaise réponse !");
-        }
-    });
-</script>
-```
-
----
-
-## Partie 12 — Exercices combinés (type examen)
-
----
-
-### Ex. 12.1 — Mini page perso (HTML seul)
-
-**Question :** Page avec titre centré, menu numéroté (3 ancres), 3 sections avec `id`, liens externes dans une liste à puces, lien mailto, `hr` entre sections.
-
-**Correction :**
-
-```html
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Ma page</title>
-</head>
-<body>
-    <h2 align="center">Nom Prénom</h2>
-    <ol>
-        <li><a href="#coordonnees">Coordonnées</a></li>
-        <li><a href="#cv">CV</a></li>
-        <li><a href="#loisirs">Loisirs</a></li>
-    </ol>
-    <hr>
-    <h3 id="coordonnees">Coordonnées</h3>
-    <p>Ville<br>Tél</p>
-    <hr width="60%">
-    <h3 id="cv">CV</h3>
-    <p>Parcours...</p>
-    <hr width="60%">
-    <h3 id="loisirs">Loisirs</h3>
-    <p>Sport...</p>
-    <ul>
-        <li><a href="https://www.esip.tn">ESIP</a></li>
-    </ul>
-    <p><a href="mailto:moi@mail.com">Contact</a></p>
-</body>
-</html>
-```
-
----
-
-### Ex. 12.2 — Page complète HTML + JS
-
-**Question :** Champ nombre + bouton Carré + résultat readonly + validation vide (tout en une page).
-
-**Correction :**
-
-```html
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Carré</title>
-</head>
-<body>
-    <label>Entier :</label><br>
-    <input type="number" id="nombre"><br>
-    <button onclick="calculerCarre()">Carré</button><br>
-    <label>Résultat :</label><br>
-    <input type="text" id="resultat" readonly>
-
-    <script>
-        function calculerCarre() {
-            let n = document.getElementById("nombre").value;
-            if (n === "") {
-                alert("Veuillez saisir un nombre !");
-                return;
-            }
-            document.getElementById("resultat").value = n * n;
-        }
-    </script>
-</body>
-</html>
-```
-
----
-
-### Ex. 12.3 — Album images (HTML + JS events)
-
-**Question :** Select 3 images + img affichée ; changement via `addEventListener("change")`.
-
-**Correction :**
-
-```html
-<select id="listeImages">
-    <option value="a.jpg">A</option>
-    <option value="b.jpg" selected>B</option>
-    <option value="c.jpg">C</option>
-</select>
-<img id="imageAffichee" src="b.jpg" alt="image">
-<script>
-    const s = document.getElementById("listeImages");
-    const i = document.getElementById("imageAffichee");
-    s.addEventListener("change", function () {
-        i.src = s.value;
-    });
-</script>
-```
-
----
-
-## Checklist — Tout est couvert ?
-
-| Thème | Exercices |
+| Sujet | Exercices |
 |-------|-----------|
-| Structure HTML5, meta, viewport | 1.1 – 1.3 |
-| Texte h, p, br, hr, b, sub, center, align | 2.1 – 2.4 |
-| ul, ol, imbriqué, type | 3.1 – 3.5 |
-| Liens externes, ancres, mailto, retour plan | 4.1 – 4.4 |
-| img src alt width | 5.1 – 5.2 |
-| form, input types, radio, checkbox, select, required, pattern, readonly, label | 6.1 – 6.7 |
-| table, th, td, colspan, align | 7.1 |
-| header, nav, main, article, aside, section, figure, footer | 8.1 – 8.3 |
-| alert, prompt, null | 9.1 – 9.2 |
-| getElementById, getElementsByName, .value, .checked, form name | 10.1 – 10.6 |
-| onclick, addEventListener, change, submit, load, mouseover, click | 10.5 – 11.5 |
-| document.location, Date, textContent, preventDefault, && ! | 11.1 – 11.5 |
-| Pages combinées examen | 12.1 – 12.3 |
+| Ordre, degré, voisins, isolé, complet | T1, T8 |
+| Σ deg = 2m | T2, T10 |
+| Matrice adjacence, symétrie | T3, T6 |
+| Chaîne, cycle, connexité | T4, T5 |
+| Orienté succ/préd | T6 |
+| Vrai/Faux | T7 |
+| BFS ordre | T9 |
+
+### Code Python
+
+| Sujet | Exercices |
+|-------|-----------|
+| Création Graph / DiGraph | P1–P5, P17 |
+| add/remove nodes & edges | P2–P4 |
+| number_of_*, neighbors | P6 |
+| shortest_path, weight | P7–P9 |
+| draw, labels, subplot | P5, P8 |
+| Graphe aléatoire | P10 |
+| Fonction degré 0 | P11 |
+| bfs_edges, deque BFS | P12–P13 |
+| has_node, is_connected | P15–P16 |
 
 ---
 
-**Conseil :** Cache la correction, fais l’exercice sur papier ou dans un fichier `.html`, puis compare.
+## Ordre d’apprentissage recommandé
+
+1. **Jour 1** — Partie B1 à B4 + exercices T1–T4  
+2. **Jour 2** — Partie B5 à B8 + T5–T10  
+3. **Jour 3** — Partie C (tout le code) + P1–P9  
+4. **Jour 4** — BFS (B7, C5) + P10–P17  
+5. **Jour 5** — Refaire T7, P17 et l’atelier complet sans regarder
+
+---
+
+Bonne préparation pour l’examen.
