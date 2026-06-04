@@ -1,635 +1,938 @@
-# Révision examen — HTML & JavaScript
+# Test — HTML & JavaScript
 
-Résumé de tout ce que tu as pratiqué dans ce dossier. **L’examen ne couvre pas le CSS** — les fichiers `html+css/` servent surtout pour la structure HTML5 (balises sémantiques).
-
----
-
-## Table des matières
-
-1. [Structure d’une page HTML](#1-structure-dune-page-html)
-2. [Texte et titres](#2-texte-et-titres)
-3. [Listes](#3-listes)
-4. [Liens et ancres](#4-liens-et-ancres)
-5. [Images](#5-images)
-6. [Formulaires HTML](#6-formulaires-html)
-7. [Tableaux](#7-tableaux)
-8. [HTML5 sémantique](#8-html5-sémantique)
-9. [JavaScript — bases](#9-javascript--bases)
-10. [JavaScript — entrée / sortie](#10-javascript--entrée--sortie)
-11. [JavaScript — manipulation des formulaires](#11-javascript--manipulation-des-formulaires)
-12. [JavaScript — gestionnaires d’événements](#12-javascript--gestionnaires-dévénements)
-13. [Aide-mémoire rapide](#13-aide-mémoire-rapide)
+Petits exercices avec **question** puis **correction en code**. Couvre tout le programme (sans CSS).
 
 ---
 
-## 1. Structure d’une page HTML
+## Partie 1 — Structure HTML
 
-### À retenir
+---
 
-| Élément | Rôle |
-|--------|------|
-| `<!DOCTYPE html>` | Déclare une page HTML5 |
-| `<html lang="fr">` | Racine ; `lang` = langue de la page |
-| `<head>` | Métadonnées (non visibles) |
-| `<body>` | Contenu visible |
+### Ex. 1.1 — Squelette minimal HTML5
 
-Dans `<head>` :
+**Question :** Écris le squelette d’une page HTML5 en français avec charset UTF-8 et le titre « Mon examen ».
+
+**Correction :**
 
 ```html
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Titre de l'onglet</title>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon examen</title>
+</head>
+<body>
+
+</body>
+</html>
 ```
 
-- **`charset`** : accents et caractères spéciaux (français).
-- **`viewport`** : adaptation mobile.
-- **`title`** : texte de l’onglet du navigateur.
+---
 
-### Exercices
+### Ex. 1.2 — Viewport mobile
 
-| Fichier | Contenu |
-|---------|---------|
-| `tp1.html` | Page simple sans DOCTYPE |
-| `tp2ex1.html`, `tp2ex2.html` | DOCTYPE + `lang="fr"` + charset |
-| `tp2ex3.html`, `tp2ex4.html` | + `viewport` |
+**Question :** Ajoute la balise meta pour que la page s’adapte aux écrans mobiles.
+
+**Correction :**
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+```
+
+*(à placer dans `<head>`)*
 
 ---
 
-## 2. Texte et titres
+### Ex. 1.3 — Où va le contenu visible ?
 
-### Balises
+**Question :** Dans quelle balise place-t-on tout ce que l’utilisateur voit à l’écran ?
 
-| Balise | Usage |
-|--------|--------|
-| `<h1>` … `<h6>` | Titres (1 = plus grand) |
-| `<p>` | Paragraphe |
-| `<br>` | Saut de ligne |
-| `<hr>` | Ligne horizontale ; attribut `width="60%"` possible |
-| `<b>` | Texte en gras |
-| `<sub>` | Indice (ex. X<sub>2</sub>) |
-| `<center>` | Centrage (ancien, mais vu dans tes TP) |
+**Correction :**
 
-Attributs de présentation (HTML ancien, présents dans tes fichiers) :
-
-- `align="center"` / `"left"` / `"right"` sur `<h2>`, `<h4>`, `<hr>`, `<td>`.
-
-### Exercices
-
-| Fichier | Contenu |
-|---------|---------|
-| `ex3.html` | Formules math avec `<b>`, `<sub>`, `<center>` |
-| `ex5.html` | `<h4 align="right/center/left">` |
-| `tp1.html` | `<h2>`, `<h3>`, `<p>`, `<br>`, `<hr>` |
+```html
+<body>
+    <h1>Bonjour</h1>
+    <p>Contenu visible ici.</p>
+</body>
+```
 
 ---
 
-## 3. Listes
+## Partie 2 — Texte et titres
 
-### Types
+---
 
-| Balise | Type | Numérotation |
-|--------|------|----------------|
-| `<ul>` | Liste à puces | Non |
-| `<ol>` | Liste numérotée | Oui |
-| `<li>` | Élément de liste | — |
+### Ex. 2.1 — Titres et paragraphe
 
-### Listes imbriquées
+**Question :** Crée un titre principal « ESIP », un sous-titre « Gafsa », puis un paragraphe sur deux lignes avec un saut de ligne.
 
-Une `<ol>` peut contenir une `<ul>` (et l’inverse) :
+**Correction :**
+
+```html
+<h1>ESIP</h1>
+<h3>Gafsa</h3>
+<p>Première ligne<br>Deuxième ligne</p>
+```
+
+---
+
+### Ex. 2.2 — Ligne horizontale
+
+**Question :** Insère une ligne de séparation à 60% de la largeur entre deux sections.
+
+**Correction :**
+
+```html
+<h3>Section 1</h3>
+<p>Texte...</p>
+<hr width="60%">
+<h3>Section 2</h3>
+```
+
+---
+
+### Ex. 2.3 — Formule avec indice
+
+**Question :** Affiche centré : **X₂** = X₁ cos(a) (X₂ et X₁ en indice, X₂ en gras).
+
+**Correction :**
+
+```html
+<center>
+    <b>X<sub>2</sub></b> = X<sub>1</sub> cos(a)
+</center>
+```
+
+---
+
+### Ex. 2.4 — Alignement
+
+**Question :** Trois titres `<h4>` : un à droite, un au centre, un à gauche.
+
+**Correction :**
+
+```html
+<h4 align="right">À droite</h4>
+<h4 align="center">Au centre</h4>
+<h4 align="left">À gauche</h4>
+```
+
+---
+
+## Partie 3 — Listes
+
+---
+
+### Ex. 3.1 — Liste à puces
+
+**Question :** Liste à puces avec : Adresse ESIP, Tél, E-mail.
+
+**Correction :**
+
+```html
+<ul>
+    <li>Adresse : ESIP Gafsa</li>
+    <li>Tel : 76 221 111</li>
+    <li>E-mail : esip@esip.tn</li>
+</ul>
+```
+
+---
+
+### Ex. 3.2 — Liste numérotée
+
+**Question :** Menu numéroté : Accueil, Contact, À propos.
+
+**Correction :**
 
 ```html
 <ol>
-  <li>Catégorie
-    <ul>
-      <li>Sous-élément</li>
-    </ul>
-  </li>
+    <li>Accueil</li>
+    <li>Contact</li>
+    <li>À propos</li>
 </ol>
 ```
 
-### Attribut `type` sur `<ul>` (vu dans `ex2.html`)
+---
 
-| Valeur | Puce |
-|--------|------|
-| `disc` | Plein (défaut) |
-| `circle` | Cercle vide |
-| `square` | Carré |
+### Ex. 3.3 — Liste imbriquée
 
-### Exercices
+**Question :** Liste numérotée « École » avec sous-liste à puces : 1ère année Tozeur, 2e année Gafsa.
 
-| Fichier | Contenu |
-|---------|---------|
-| `ex2.html` | `ul`, `ol` imbriqué, `type="disc/circle/square"` |
-| `tp1.html` | `ol` (menu) + `ul` (sites) |
-| `tp2ex1.html` | `ol` > `ul` + liens |
+**Correction :**
+
+```html
+<ol>
+    <li>École
+        <ul>
+            <li>1ère : Tozeur</li>
+            <li>2e : Gafsa</li>
+        </ul>
+    </li>
+</ol>
+```
 
 ---
 
-## 4. Liens et ancres
+### Ex. 3.4 — Type de puces
 
-### Lien externe
+**Question :** Même liste avec puces `disc`, puis `circle`, puis `square` (3 listes séparées).
 
-```html
-<a href="https://www.google.com">Texte du lien</a>
-```
-
-**Important :** `href` doit souvent commencer par `http://` ou `https://`. Sinon le navigateur cherche une page locale.
-
-### Lien interne (ancre sur la même page)
-
-1. Définir un **id** sur la cible : `<h3 id="coordonnees">`
-2. Lier avec **#** + id : `<a href="#coordonnees">Mes coordonnées</a>`
-
-### Lien e-mail
+**Correction :**
 
 ```html
-<a href="mailto:test@gmail.com">Nom Prénom</a>
+<ul type="disc"><li>Item A</li></ul>
+<ul type="circle"><li>Item B</li></ul>
+<ul type="square"><li>Item C</li></ul>
 ```
-
-Ouvre le client mail avec l’adresse préremplie.
-
-### Navigation aller-retour (plan ↔ chapitre)
-
-- Plan → contenu : `<a href="#intro">`
-- Contenu → plan : `<a href="#plan1">` avec `<li id="plan1">` dans le sommaire.
-
-### Exercices
-
-| Fichier | Contenu |
-|---------|---------|
-| `tp1.html` | Ancres `#coordonnes`, `#cv`, `#loisirs` ; `mailto:` ; liens externes |
-| `tp2ex3.html` | Ancres `#intro`, `#chap1`, `#chap2` |
-| `tp2ex4.html` | Liens bidirectionnels plan ↔ sections |
 
 ---
 
-## 5. Images
+### Ex. 3.5 — Liens dans une liste imbriquée
+
+**Question :** Liste numérotée « Constructeurs » contenant une liste à puces avec liens vers Apple et IBM.
+
+**Correction :**
 
 ```html
-<img src="chemin/image.jpg" alt="description" width="20%">
+<ol>
+    <li>Constructeurs
+        <ul>
+            <li><a href="https://www.apple.com">Apple</a></li>
+            <li><a href="https://www.ibm.com">IBM</a></li>
+        </ul>
+    </li>
+</ol>
 ```
-
-| Attribut | Rôle |
-|----------|------|
-| `src` | Chemin ou URL de l’image |
-| `alt` | Texte si l’image ne charge pas (accessibilité) |
-| `width` | Largeur (`%` ou pixels) |
-
-### Exercices
-
-| Fichier | Contenu |
-|---------|---------|
-| `tp2ex5.html` | `<img>` + lien dans un `<li>` |
-| `html+css/photo.html` | `<figure>` + `<img>` (structure sémantique) |
 
 ---
 
-## 6. Formulaires HTML
+## Partie 4 — Liens et ancres
 
-### Structure de base
+---
+
+### Ex. 4.1 — Lien externe
+
+**Question :** Lien cliquable « Google » vers https://www.google.com.
+
+**Correction :**
 
 ```html
-<form name="monForm" id="formLogin">
-  <label>Entier :</label>
-  <input type="text" name="zoneTexte" id="login">
-  <button type="button">Cliquer</button>
-  <button type="submit">Envoyer</button>
+<a href="https://www.google.com">Google</a>
+```
+
+---
+
+### Ex. 4.2 — Ancre interne (aller vers une section)
+
+**Question :** Menu avec 2 liens vers les sections `#contact` et `#cv`. Chaque section a un `<h3>` avec le bon `id`.
+
+**Correction :**
+
+```html
+<ol>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#cv">CV</a></li>
+</ol>
+<hr>
+<h3 id="contact">Contact</h3>
+<p>Mon adresse...</p>
+<hr>
+<h3 id="cv">Mon CV</h3>
+<p>Mon parcours...</p>
+```
+
+---
+
+### Ex. 4.3 — Retour au plan
+
+**Question :** Dans le sommaire, le chapitre a `id="plan1"`. Dans le contenu, un lien « Retour au plan » pointe vers ce sommaire.
+
+**Correction :**
+
+```html
+<!-- Sommaire -->
+<li id="plan1"><a href="#intro">Introduction</a></li>
+
+<!-- Contenu -->
+<li id="intro"><a href="#plan1">Introduction</a></li>
+<p>Texte du chapitre...</p>
+```
+
+---
+
+### Ex. 4.4 — Lien e-mail
+
+**Question :** Lien qui ouvre un mail à `etudiant@esip.tn` avec le texte « Me contacter ».
+
+**Correction :**
+
+```html
+<a href="mailto:etudiant@esip.tn">Me contacter</a>
+```
+
+---
+
+## Partie 5 — Images
+
+---
+
+### Ex. 5.1 — Image simple
+
+**Question :** Affiche `logo.png` avec texte alternatif « Logo ESIP » et largeur 30%.
+
+**Correction :**
+
+```html
+<img src="logo.png" alt="Logo ESIP" width="30%">
+```
+
+---
+
+### Ex. 5.2 — Image + lien dans une liste
+
+**Question :** Dans un `<li>`, affiche une petite image puis un lien « Lycos ».
+
+**Correction :**
+
+```html
+<li>
+    <img src="lycos.png" alt="logo Lycos" width="20%">
+    <a href="https://www.lycos.com">Lycos</a>
+</li>
+```
+
+---
+
+## Partie 6 — Formulaires HTML
+
+---
+
+### Ex. 6.1 — Formulaire texte + bouton
+
+**Question :** Formulaire nommé `monForm` avec un champ texte `zoneTexte` et un bouton type `button` (pas submit).
+
+**Correction :**
+
+```html
+<form name="monForm">
+    <input type="text" name="zoneTexte"><br><br>
+    <button type="button">Cliquer</button>
 </form>
 ```
 
-### Types d’`<input>` vus dans tes TP
+---
 
-| `type` | Usage |
-|--------|--------|
-| `text` | Texte libre |
-| `password` | Mot de passe masqué |
-| `number` | Nombre |
-| `radio` | Un seul choix parmi plusieurs (même `name`) |
-| `checkbox` | Cases à cocher multiples |
-| `time` | Heure |
+### Ex. 6.2 — Boutons radio
 
-### Boutons radio
+**Question :** 3 options radio (même groupe `choix`) : A, B, C avec les values « Option A », etc.
+
+**Correction :**
 
 ```html
-<input type="radio" name="choix" value="Option 1"> Option 1
-<input type="radio" name="choix" value="Option 2"> Option 2
+<input type="radio" name="choix" value="Option A"> A<br>
+<input type="radio" name="choix" value="Option B"> B<br>
+<input type="radio" name="choix" value="Option C"> C<br>
 ```
 
-Même **`name`** = un seul choix possible.
+---
 
-### Liste déroulante `<select>`
+### Ex. 6.3 — Cases à cocher
+
+**Question :** 4 checkboxes avec les id `c1`, `c2`, `c3`, `c4`.
+
+**Correction :**
+
+```html
+<input type="checkbox" id="c1"> 1<br>
+<input type="checkbox" id="c2"> 2<br>
+<input type="checkbox" id="c3"> 3<br>
+<input type="checkbox" id="c4"> 4<br>
+```
+
+---
+
+### Ex. 6.4 — Liste déroulante
+
+**Question :** Select `id="musique"` avec option vide par défaut et Jazz, Rock.
+
+**Correction :**
 
 ```html
 <select id="musique">
-  <option value="">-- Sélectionnez --</option>
-  <option value="Jazz">Jazz</option>
+    <option value="">-- Choisir --</option>
+    <option value="Jazz">Jazz</option>
+    <option value="Rock">Rock</option>
 </select>
 ```
 
-- **`value`** : valeur lue en JavaScript.
-- **`selected`** : option par défaut.
+---
 
-### Validation HTML5 (`022426.HTML`)
+### Ex. 6.5 — Champ obligatoire et pattern
 
-| Attribut | Effet |
-|----------|--------|
-| `required` | Champ obligatoire |
-| `pattern="[ a-zA-Z]*"` | Expression régulière (ici : lettres et espaces) |
-| `readonly` | Lecture seule (pas modifiable par l’utilisateur) |
+**Question :** Champ texte obligatoire ; un autre qui n’accepte que des lettres (et espaces) via `pattern`.
 
-États CSS liés (concept utile même sans CSS à l’examen) : `:required`, `:optional`, `:invalid`.
+**Correction :**
 
-### Exercices
-
-| Fichier | Contenu |
-|---------|---------|
-| `022426.HTML` | `required`, `pattern`, `type="time"` |
-| `tp4 js/.../ex1` (formulaires) | Radio |
-| `tp4 js/.../ex2` | Select + `onchange` |
-| `tp4 js/.../ex4` | Login + `submit` |
+```html
+<input type="text" required><br>
+<input type="text" pattern="[ a-zA-Z]*" value="lettres">
+```
 
 ---
 
-## 7. Tableaux
+### Ex. 6.6 — Autres types d’input
+
+**Question :** Un champ `number`, un `password`, un `time` obligatoire, un champ `readonly` pour le résultat.
+
+**Correction :**
+
+```html
+<input type="number" id="nombre"><br>
+<input type="password" id="mdp"><br>
+<input type="time" value="08:00" required><br>
+<input type="text" id="resultat" readonly>
+```
+
+---
+
+### Ex. 6.7 — Label
+
+**Question :** Associe le label « Entier : » au champ nombre `id="nombre"`.
+
+**Correction :**
+
+```html
+<label for="nombre">Entier :</label><br>
+<input type="number" id="nombre">
+```
+
+---
+
+## Partie 7 — Tableaux
+
+---
+
+### Ex. 7.1 — Tableau login
+
+**Question :** Tableau bordure 1 : en-têtes Login / Password, une ligne avec 2 inputs, une ligne avec un bouton Login centré sur 2 colonnes.
+
+**Correction :**
 
 ```html
 <table border="1">
-  <tr>
-    <th>Login</th>
-    <th>Password</th>
-  </tr>
-  <tr>
-    <td><input type="text"></td>
-    <td><input type="password"></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center">...</td>
-  </tr>
+    <tr>
+        <th>Login</th>
+        <th>Password</th>
+    </tr>
+    <tr>
+        <td><input type="text" id="login"></td>
+        <td><input type="password" id="password"></td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center">
+            <button type="submit">Login</button>
+        </td>
+    </tr>
 </table>
 ```
 
-| Balise | Rôle |
-|--------|------|
-| `<table>` | Tableau |
-| `<tr>` | Ligne |
-| `<th>` | En-tête de colonne |
-| `<td>` | Cellule |
-| `colspan="2"` | Fusionne 2 colonnes |
-| `border="1"` | Bordure visible |
+---
 
-### Exercice
-
-| Fichier | Contenu |
-|---------|---------|
-| `tp4 js/MANIPULATION DES FORMULAIRES/ex4.html` | Formulaire login dans un tableau |
+## Partie 8 — HTML5 sémantique
 
 ---
 
-## 8. HTML5 sémantique
+### Ex. 8.1 — Structure de page
 
-Balises pour structurer le sens (pas seulement l’apparence) :
+**Question :** Page avec `header`, `nav`, `main`, `footer`. Dans `main`, un `article` avec titre et paragraphe.
 
-| Balise | Rôle |
-|--------|------|
-| `<header>` | En-tête de page ou de section |
-| `<nav>` | Menu de navigation |
-| `<main>` | Contenu principal |
-| `<article>` | Bloc autonome (article, produit…) |
-| `<section>` | Section thématique |
-| `<aside>` | Contenu latéral |
-| `<footer>` | Pied de page |
-| `<figure>` | Image + légende possible |
-
-Autres éléments utiles :
-
-- `<button>` : bouton (ex. « Add to cart »)
-- `&copy;` : symbole ©
-
-### Exercices (structure HTML uniquement)
-
-| Fichier | Contenu |
-|---------|---------|
-| `html+css/2.html` | `header`, `main`, `aside`, `article`, `footer` |
-| `html+css/photo.html` | `header`, `nav`, `main`, `article`, `figure`, `footer` |
-| `html+css/tp6/ex2.html` | `header`, `main`, `article`, `button`, `img` |
-| `html+css/tp6/ex3.html` | `header`, `nav`, `section`, `footer` |
-
----
-
-# JavaScript
-
-Le JavaScript s’écrit dans `<script>` … `</script>`, en bas du `<body>` ou dans le `<head>`.
-
----
-
-## 9. JavaScript — bases
-
-### Syntaxe
-
-```javascript
-let variable = "valeur";        // variable modifiable
-const element = document.getElementById("id");  // constante
-
-function nomFonction() {
-  // code
-}
-```
-
-### Accéder au DOM (Document Object Model)
-
-| Méthode | Retourne |
-|---------|----------|
-| `document.getElementById("id")` | Un élément par son `id` |
-| `document.getElementsByName("nom")` | Liste d’éléments (ex. radios) |
-| `document.monForm.zoneTexte` | Champ par `name` du formulaire |
-
-### Propriétés courantes
-
-| Propriété | Sur | Usage |
-|-----------|-----|--------|
-| `.value` | input, select | Lire / écrire la valeur |
-| `.checked` | radio, checkbox | `true` si coché |
-| `.src` | `<img>` | Changer l’image |
-| `.textContent` | tout élément | Texte affiché |
-| `document.location.href` | page | Changer d’URL (navigation) |
-
-### Boucle `for`
-
-```javascript
-for (let i = 0; i < choix.length; i++) {
-  if (choix[i].checked) { ... }
-}
-```
-
-### Conditions
-
-```javascript
-if (condition) {
-} else if (autre) {
-} else {
-}
-
-// Comparaisons : ===  !==  &&  ||
-if (c1.checked && c2.checked && !c3.checked) { ... }
-```
-
----
-
-## 10. JavaScript — entrée / sortie
-
-**Dossier :** `tp4 js/ENTREE SORTIE/`
-
-### `alert(message)`
-
-Affiche une boîte de dialogue avec un message.
-
-```javascript
-alert("Bonjour");
-alert("L'année saisie est : " + annee);
-```
-
-### `prompt(message)`
-
-Demande une saisie à l’utilisateur.
-
-- Retourne la **chaîne saisie**.
-- Retourne **`null`** si l’utilisateur clique sur Annuler.
-
-```javascript
-let annee = prompt("Veuillez introduire l'année :");
-if (annee !== null) {
-  alert("L'année saisie est : " + annee);
-} else {
-  alert("Vous avez annulé la saisie.");
-}
-```
-
-### Modifier un champ de formulaire
-
-```javascript
-function afficher() {
-  document.monForm.zoneTexte.value = "ESIP";
-}
-```
-
-Déclenchement : `onclick="afficher()"` sur un bouton.
-
-### Lire un champ + calcul
-
-```javascript
-let nombre = document.getElementById("nombre").value;
-if (nombre === "") {
-  alert("Veuillez saisir un nombre !");
-  return;
-}
-let carre = nombre * nombre;
-document.getElementById("resultat").value = carre;
-```
-
-**Note :** `.value` d’un input est une **chaîne** ; `*` la convertit souvent en nombre. Pour un contrôle strict : `Number(nombre)` ou `parseInt(nombre)`.
-
-### Résumé exercices
-
-| Ex. | Fichier | Concepts |
-|-----|---------|----------|
-| 1 | `ex1.html` | `alert()` |
-| 2 | `ex2.html` | `form`, `onclick`, modifier `.value` |
-| 3 | `ex3.html` | `prompt()`, `null`, `let` |
-| 4 | `ex4.html` | `getElementById`, calcul, `readonly`, validation vide |
-
----
-
-## 11. JavaScript — manipulation des formulaires
-
-**Dossier :** `tp4 js/MANIPULATION DES FORMULAIRES/`
-
-### Boutons radio — lire le choix
-
-```javascript
-let choix = document.getElementsByName("choix");
-let selection = null;
-for (let i = 0; i < choix.length; i++) {
-  if (choix[i].checked) {
-    selection = choix[i].value;
-    break;
-  }
-}
-if (selection) {
-  alert("Votre choix est : " + selection);
-} else {
-  alert("Veuillez sélectionner une option !");
-}
-```
-
-### `<select>` — `onchange` ou `addEventListener`
-
-```javascript
-// Méthode 1 : attribut HTML
-<select id="musique" onchange="afficherChoix()">
-
-// Méthode 2 : JavaScript
-select.addEventListener("change", function () {
-  image.src = select.value;
-});
-```
-
-```javascript
-let choix = document.getElementById("musique").value;
-if (choix !== "") {
-  alert("Vous avez choisi : " + choix);
-}
-```
-
-### Changer l’image selon la liste
-
-```javascript
-const select = document.getElementById("listeImages");
-const image = document.getElementById("imageAffichee");
-select.addEventListener("change", function () {
-  image.src = select.value;  // value = nom du fichier image
-});
-```
-
-### Formulaire — empêcher l’envoi + validation
-
-```javascript
-form.addEventListener("submit", function(event) {
-  event.preventDefault();  // empêche le rechargement de la page
-
-  if (login.value === "" && password.value === "") {
-    alert("Veuillez saisir le login et le mot de passe !");
-  } else if (login.value === "") {
-    alert("Veuillez saisir le login !");
-  } else if (password.value === "") {
-    alert("Veuillez saisir le mot de passe !");
-  } else {
-    alert("Connexion réussie !");
-  }
-});
-```
-
-### Résumé exercices
-
-| Ex. | Fichier | Concepts |
-|-----|---------|----------|
-| 1 | `ex1.html` | `getElementsByName`, `.checked`, `.value`, boucle `for` |
-| 2 | `ex2.html` | `<select>`, `.value`, `onchange` |
-| 3 | `ex3.html` | `addEventListener("change")`, modifier `img.src` |
-| 4 | `ex4.html` | `submit`, `preventDefault()`, validation champs vides |
-
----
-
-## 12. JavaScript — gestionnaires d’événements
-
-**Dossier :** `tp4 js/GESTIONNAIRES EVENTS/`
-
-### Deux façons d’attacher un événement
+**Correction :**
 
 ```html
-<!-- Inline (dans le HTML) -->
+<header>
+    <h1>Mon site</h1>
+    <nav>
+        <a href="#">Accueil</a>
+    </nav>
+</header>
+<main>
+    <article>
+        <h2>Article</h2>
+        <p>Contenu...</p>
+    </article>
+</main>
+<footer>
+    <p>&copy; 2026 ESIP</p>
+</footer>
+```
+
+---
+
+### Ex. 8.2 — Layout avec aside
+
+**Question :** `main` contient un `aside` (menu) et un `article` (contenu).
+
+**Correction :**
+
+```html
+<main>
+    <aside>
+        <ul>
+            <li>Menu 1</li>
+            <li>Menu 2</li>
+        </ul>
+    </aside>
+    <article>
+        <h2>Titre</h2>
+        <p>Texte principal...</p>
+    </article>
+</main>
+```
+
+---
+
+### Ex. 8.3 — Figure et section
+
+**Question :** Une `section` avec 2 `article`. Le premier contient un `figure` avec image.
+
+**Correction :**
+
+```html
+<section>
+    <article>
+        <h2>Photo</h2>
+        <figure>
+            <img src="photo.png" alt="Description">
+        </figure>
+    </article>
+    <article>
+        <h2>Texte</h2>
+        <p>Paragraphe...</p>
+    </article>
+</section>
+```
+
+---
+
+## Partie 9 — JavaScript : alert & prompt
+
+---
+
+### Ex. 9.1 — Alert au chargement
+
+**Question :** Au chargement de la page, affiche « Bonjour ».
+
+**Correction :**
+
+```html
+<script>
+    alert("Bonjour");
+</script>
+```
+
+---
+
+### Ex. 9.2 — Prompt année
+
+**Question :** Demande l’année. Si l’utilisateur annule, alerte « Annulé ». Sinon affiche l’année saisie.
+
+**Correction :**
+
+```html
+<script>
+    let annee = prompt("Entrez l'année :");
+    if (annee !== null) {
+        alert("Année : " + annee);
+    } else {
+        alert("Annulé");
+    }
+</script>
+```
+
+---
+
+## Partie 10 — JavaScript : DOM & formulaires
+
+---
+
+### Ex. 10.1 — Écrire dans un champ (form name)
+
+**Question :** Fonction `afficher()` qui met « ESIP » dans `document.monForm.zoneTexte.value`. Bouton `onclick`.
+
+**Correction :**
+
+```html
+<form name="monForm">
+    <input type="text" name="zoneTexte">
+    <button type="button" onclick="afficher()">Afficher</button>
+</form>
+<script>
+    function afficher() {
+        document.monForm.zoneTexte.value = "ESIP";
+    }
+</script>
+```
+
+---
+
+### Ex. 10.2 — Carré d’un nombre
+
+**Question :** Bouton « Carré » : lit `#nombre`, si vide → alerte ; sinon met le carré dans `#resultat` (readonly).
+
+**Correction :**
+
+```html
+<input type="number" id="nombre">
 <button onclick="calculerCarre()">Carré</button>
+<input type="text" id="resultat" readonly>
 
-<!-- Recommandé : en JavaScript -->
-btn.addEventListener("click", function() {
-  document.location.href = "fichier.htm";
-});
-```
-
-### Événements vus dans tes TP
-
-| Événement | Quand | Exemple |
-|-----------|--------|---------|
-| `click` | Clic souris | Bouton, lien, « Corriger » |
-| `change` | Valeur d’un select change | Liste musique / images |
-| `submit` | Envoi du formulaire | Login |
-| `load` | Page entièrement chargée | `window.addEventListener("load", ...)` |
-| `mouseover` | Souris sur l’élément | Lien « Survolez-moi » |
-
-### Navigation vers une autre page
-
-```javascript
-document.location.href = "fichier.htm";
-```
-
-### Date et heure
-
-```javascript
-const maintenant = new Date();
-dateElement.textContent = maintenant.toLocaleString();
-```
-
-- **`new Date()`** : date/heure actuelles.
-- **`.toLocaleString()`** : format lisible selon la locale.
-- **`.textContent`** : insérer du texte dans un élément HTML.
-
-### Message au chargement de la page
-
-```javascript
-window.addEventListener("load", function() {
-  alert("Bienvenue à cette page");
-});
-```
-
-### Checkboxes (QCM)
-
-```javascript
-if (c1.checked && c2.checked && c4.checked && !c3.checked) {
-  alert("Bonne réponse !");
-} else {
-  alert("Mauvaise réponse !");
-}
-```
-
-- **`.checked`** : `true` si la case est cochée.
-- **`&&`** : ET logique — toutes les conditions doivent être vraies.
-- **`!c3.checked`** : case 3 ne doit **pas** être cochée.
-
-### Résumé exercices
-
-| Ex. | Fichier | Concepts |
-|-----|---------|----------|
-| 1 | `ex1.html` | `addEventListener("click")`, `document.location.href` |
-| 2 | `ex2.html` | `new Date()`, `toLocaleString()`, `textContent` |
-| 3 | `ex3.html` | `window`, événement `load` |
-| 4 | `ex4.html` | `mouseover` sur un lien `<a>` |
-| 5 | `ex5.html` | checkboxes, `.checked`, logique `&&` / `!` |
-
----
-
-## 13. Aide-mémoire rapide
-
-### HTML — pièges fréquents à l’examen
-
-1. Ancre interne : **`href="#id"`** + **`id="id"`** sur la cible.
-2. Liens externes : préférer **`https://...`**.
-3. Radio : même **`name`**, valeurs différentes dans **`value`**.
-4. **`required`** et **`pattern`** valident côté navigateur avant JavaScript.
-5. **`colspan`** fusionne des colonnes ; **`rowspan`** fusionne des lignes (pas vu mais utile).
-
-### JavaScript — pièges fréquents
-
-1. **`getElementById`** → un seul élément ; **`getElementsByName`** → tableau.
-2. **`prompt()`** annulé → **`null`**, pas une chaîne vide.
-3. Formulaire : **`event.preventDefault()`** pour ne pas recharger la page.
-4. Vérifier **`""`** avant un calcul (`ex4 entrée/sortie`).
-5. Radio non sélectionné : boucler et tester **`.checked`**.
-
-### Carte des dossiers
-
-```
-Racine/
-├── tp1.html              → Page perso, ancres, listes, mailto
-├── tp2ex*.html           → Listes imbriquées, ancres, images
-├── ex2.html, ex3.html    → Listes, formules math
-├── ex5.html              → align sur titres
-├── 022426.HTML           → Validation formulaire (required, pattern)
-├── html+css/             → HTML5 sémantique (pas CSS à l'examen)
-└── tp4 js/
-    ├── ENTREE SORTIE/    → alert, prompt, getElementById, calcul
-    ├── MANIPULATION DES FORMULAIRES/ → radio, select, submit, images
-    └── GESTIONNAIRES EVENTS/ → addEventListener, Date, load, QCM
+<script>
+    function calculerCarre() {
+        let n = document.getElementById("nombre").value;
+        if (n === "") {
+            alert("Saisissez un nombre !");
+            return;
+        }
+        document.getElementById("resultat").value = n * n;
+    }
+</script>
 ```
 
 ---
 
-Bonne chance pour l’examen.
+### Ex. 10.3 — Lire un radio (boucle)
+
+**Question :** Fonction qui parcourt les radios `name="choix"` et affiche la value cochée, sinon « Aucun choix ».
+
+**Correction :**
+
+```html
+<button onclick="afficherChoix()">Valider</button>
+<script>
+    function afficherChoix() {
+        let choix = document.getElementsByName("choix");
+        let selection = null;
+        for (let i = 0; i < choix.length; i++) {
+            if (choix[i].checked) {
+                selection = choix[i].value;
+                break;
+            }
+        }
+        if (selection) {
+            alert("Choix : " + selection);
+        } else {
+            alert("Aucun choix");
+        }
+    }
+</script>
+```
+
+---
+
+### Ex. 10.4 — Select onchange
+
+**Question :** Quand on change le select `#musique`, si une valeur est choisie, alerte « Vous avez choisi : … ».
+
+**Correction :**
+
+```html
+<select id="musique" onchange="afficherChoix()">
+    <option value="">--</option>
+    <option value="Jazz">Jazz</option>
+</select>
+<script>
+    function afficherChoix() {
+        let v = document.getElementById("musique").value;
+        if (v !== "") {
+            alert("Vous avez choisi : " + v);
+        }
+    }
+</script>
+```
+
+---
+
+### Ex. 10.5 — Changer image avec select
+
+**Question :** Select `#listeImages` : au `change`, met à jour `src` de `#imageAffichee`.
+
+**Correction :**
+
+```html
+<select id="listeImages">
+    <option value="chat.jpg">Chat</option>
+    <option value="chien.png">Chien</option>
+</select>
+<img id="imageAffichee" src="chat.jpg" alt="image">
+
+<script>
+    const select = document.getElementById("listeImages");
+    const img = document.getElementById("imageAffichee");
+    select.addEventListener("change", function () {
+        img.src = select.value;
+    });
+</script>
+```
+
+---
+
+### Ex. 10.6 — Formulaire submit + validation
+
+**Question :** Form `#formLogin` : au submit, `preventDefault`. Vérifie login et password vides (messages différents) ou succès.
+
+**Correction :**
+
+```html
+<form id="formLogin">
+    <input type="text" id="login">
+    <input type="password" id="password">
+    <button type="submit">Login</button>
+</form>
+<script>
+    const form = document.getElementById("formLogin");
+    const login = document.getElementById("login");
+    const password = document.getElementById("password");
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        if (login.value === "" && password.value === "") {
+            alert("Saisir login et mot de passe !");
+        } else if (login.value === "") {
+            alert("Saisir le login !");
+        } else if (password.value === "") {
+            alert("Saisir le mot de passe !");
+        } else {
+            alert("Connexion réussie !");
+        }
+    });
+</script>
+```
+
+---
+
+## Partie 11 — JavaScript : événements
+
+---
+
+### Ex. 11.1 — Clic → autre page
+
+**Question :** Bouton `#btn` : au clic, va vers `page.html` avec `addEventListener`.
+
+**Correction :**
+
+```html
+<button id="btn">Aller</button>
+<script>
+    document.getElementById("btn").addEventListener("click", function () {
+        document.location.href = "page.html";
+    });
+</script>
+```
+
+---
+
+### Ex. 11.2 — Date actuelle
+
+**Question :** Affiche la date/heure actuelle dans `<h2 id="date">` avec `new Date()` et `toLocaleString()`.
+
+**Correction :**
+
+```html
+<h2 id="date"></h2>
+<script>
+    const el = document.getElementById("date");
+    el.textContent = new Date().toLocaleString();
+</script>
+```
+
+---
+
+### Ex. 11.3 — Événement load
+
+**Question :** Quand la page est entièrement chargée, alerte « Bienvenue ».
+
+**Correction :**
+
+```html
+<script>
+    window.addEventListener("load", function () {
+        alert("Bienvenue");
+    });
+</script>
+```
+
+---
+
+### Ex. 11.4 — mouseover
+
+**Question :** Lien `#lien` : au survol, alerte « Bonjour prof ».
+
+**Correction :**
+
+```html
+<a href="#" id="lien">Survolez-moi</a>
+<script>
+    document.getElementById("lien").addEventListener("mouseover", function () {
+        alert("Bonjour prof");
+    });
+</script>
+```
+
+---
+
+### Ex. 11.5 — QCM checkboxes
+
+**Question :** Bonne réponse si c1, c2 et c4 cochés ET c3 non coché. Bouton `#corriger` au clic.
+
+**Correction :**
+
+```html
+<input type="checkbox" id="c1"> 1<br>
+<input type="checkbox" id="c2"> 2<br>
+<input type="checkbox" id="c3"> 3<br>
+<input type="checkbox" id="c4"> 4<br>
+<button id="corriger">Corriger</button>
+
+<script>
+    const c1 = document.getElementById("c1");
+    const c2 = document.getElementById("c2");
+    const c3 = document.getElementById("c3");
+    const c4 = document.getElementById("c4");
+
+    document.getElementById("corriger").addEventListener("click", function () {
+        if (c1.checked && c2.checked && c4.checked && !c3.checked) {
+            alert("Bonne réponse !");
+        } else {
+            alert("Mauvaise réponse !");
+        }
+    });
+</script>
+```
+
+---
+
+## Partie 12 — Exercices combinés (type examen)
+
+---
+
+### Ex. 12.1 — Mini page perso (HTML seul)
+
+**Question :** Page avec titre centré, menu numéroté (3 ancres), 3 sections avec `id`, liens externes dans une liste à puces, lien mailto, `hr` entre sections.
+
+**Correction :**
+
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ma page</title>
+</head>
+<body>
+    <h2 align="center">Nom Prénom</h2>
+    <ol>
+        <li><a href="#coordonnees">Coordonnées</a></li>
+        <li><a href="#cv">CV</a></li>
+        <li><a href="#loisirs">Loisirs</a></li>
+    </ol>
+    <hr>
+    <h3 id="coordonnees">Coordonnées</h3>
+    <p>Ville<br>Tél</p>
+    <hr width="60%">
+    <h3 id="cv">CV</h3>
+    <p>Parcours...</p>
+    <hr width="60%">
+    <h3 id="loisirs">Loisirs</h3>
+    <p>Sport...</p>
+    <ul>
+        <li><a href="https://www.esip.tn">ESIP</a></li>
+    </ul>
+    <p><a href="mailto:moi@mail.com">Contact</a></p>
+</body>
+</html>
+```
+
+---
+
+### Ex. 12.2 — Page complète HTML + JS
+
+**Question :** Champ nombre + bouton Carré + résultat readonly + validation vide (tout en une page).
+
+**Correction :**
+
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Carré</title>
+</head>
+<body>
+    <label>Entier :</label><br>
+    <input type="number" id="nombre"><br>
+    <button onclick="calculerCarre()">Carré</button><br>
+    <label>Résultat :</label><br>
+    <input type="text" id="resultat" readonly>
+
+    <script>
+        function calculerCarre() {
+            let n = document.getElementById("nombre").value;
+            if (n === "") {
+                alert("Veuillez saisir un nombre !");
+                return;
+            }
+            document.getElementById("resultat").value = n * n;
+        }
+    </script>
+</body>
+</html>
+```
+
+---
+
+### Ex. 12.3 — Album images (HTML + JS events)
+
+**Question :** Select 3 images + img affichée ; changement via `addEventListener("change")`.
+
+**Correction :**
+
+```html
+<select id="listeImages">
+    <option value="a.jpg">A</option>
+    <option value="b.jpg" selected>B</option>
+    <option value="c.jpg">C</option>
+</select>
+<img id="imageAffichee" src="b.jpg" alt="image">
+<script>
+    const s = document.getElementById("listeImages");
+    const i = document.getElementById("imageAffichee");
+    s.addEventListener("change", function () {
+        i.src = s.value;
+    });
+</script>
+```
+
+---
+
+## Checklist — Tout est couvert ?
+
+| Thème | Exercices |
+|-------|-----------|
+| Structure HTML5, meta, viewport | 1.1 – 1.3 |
+| Texte h, p, br, hr, b, sub, center, align | 2.1 – 2.4 |
+| ul, ol, imbriqué, type | 3.1 – 3.5 |
+| Liens externes, ancres, mailto, retour plan | 4.1 – 4.4 |
+| img src alt width | 5.1 – 5.2 |
+| form, input types, radio, checkbox, select, required, pattern, readonly, label | 6.1 – 6.7 |
+| table, th, td, colspan, align | 7.1 |
+| header, nav, main, article, aside, section, figure, footer | 8.1 – 8.3 |
+| alert, prompt, null | 9.1 – 9.2 |
+| getElementById, getElementsByName, .value, .checked, form name | 10.1 – 10.6 |
+| onclick, addEventListener, change, submit, load, mouseover, click | 10.5 – 11.5 |
+| document.location, Date, textContent, preventDefault, && ! | 11.1 – 11.5 |
+| Pages combinées examen | 12.1 – 12.3 |
+
+---
+
+**Conseil :** Cache la correction, fais l’exercice sur papier ou dans un fichier `.html`, puis compare.
